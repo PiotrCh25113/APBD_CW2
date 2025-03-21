@@ -5,18 +5,39 @@ using CW2.Exceptions;
 
 Console.WriteLine("Hello, World!");
 
-GasContainer test = new GasContainer(10,  21,2,14);
-test.printContainer();
-Console.WriteLine(test.contentWeight);
+GasContainer testGas = new GasContainer(10,  21,2,14);
+testGas.printContainer();
+Console.WriteLine(testGas.contentWeight);
 try
 {
-    test.loadContainer(10);
+    testGas.loadContainer(10);
 }
 catch (OverfillException ex)
 {
     Console.WriteLine(ex);
 }
 
-test.unLoadContainer();
-test.unLoadContainer();
-Console.WriteLine(test.contentWeight);
+testGas.unLoadContainer();
+testGas.unLoadContainer();
+Console.WriteLine(testGas.contentWeight);
+testGas.sendWarning();
+
+LiquidContainer testLiquid = new LiquidContainer(10,  21,2,100);
+
+
+try
+{
+    testLiquid.loadContainer(46, false);
+    testLiquid.loadContainer(3, true);
+    testLiquid.loadContainer(3);
+
+}
+catch (OverfillException ex)
+{
+    Console.WriteLine(ex);
+}
+Console.WriteLine(testLiquid.hasDangerous);
+
+
+
+

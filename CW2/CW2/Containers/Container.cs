@@ -14,7 +14,7 @@ public abstract class Container
     public int containerId { get; } //autogenertaed
     public static List<int> containerIdList = new(); //autogenertaed, list of ids to ensure uniqe values
     public string serialNumber { get; set; } //autogenertaed
-    public int maxCapacity { get; set; }
+    public double maxCapacity { get; set; }
 
     protected Container(double continerHeight, double containerWeight, double containerDepth, int maxCapacity)
     {
@@ -58,7 +58,7 @@ public abstract class Container
         Console.WriteLine("You have successfully unloaded container: " + serialNumber);
     }
 
-    public void loadContainer(int mass)
+    public virtual void loadContainer(int mass)
     {
         if (mass + contentWeight > maxCapacity)
         {
