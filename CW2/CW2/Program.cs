@@ -37,6 +37,23 @@ catch (OverfillException ex)
     Console.WriteLine(ex);
 }
 Console.WriteLine(testLiquid.hasDangerous);
+CoolProduct bananas = new CoolProduct("bananas", 10, 12.9);
+CoolProduct chocolate = new CoolProduct("chocolate", 3, -2.9);
+
+CoolContainer testCool = new CoolContainer(10,  21,2,20, "bananas", 11);
+try
+{
+    testCool.loadContainer(bananas);
+    testCool.loadContainer(bananas);
+    testCool.loadContainer(chocolate);
+    
+}
+catch (OverfillException e)
+{
+    Console.WriteLine(e);
+}
+
+testCool.printContainer();
 
 
 

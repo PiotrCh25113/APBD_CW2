@@ -15,6 +15,8 @@ public abstract class Container
     public static List<int> containerIdList = new(); //autogenertaed, list of ids to ensure uniqe values
     public string serialNumber { get; set; } //autogenertaed
     public double maxCapacity { get; set; }
+    
+    public bool isOnShip { get; set; } = false;
 
     protected Container(double continerHeight, double containerWeight, double containerDepth, int maxCapacity)
     {
@@ -48,8 +50,8 @@ public abstract class Container
 
     public void printContainer()
     {
-        Console.WriteLine("Container: " + containerType);
         Console.WriteLine("serial number: " + serialNumber);
+        Console.WriteLine("Container has: " + contentWeight + " kg");
     }
 
     public virtual void  unLoadContainer()
