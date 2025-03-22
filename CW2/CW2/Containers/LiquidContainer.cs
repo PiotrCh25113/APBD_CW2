@@ -14,7 +14,7 @@ public class LiquidContainer : Container, IHazardNotifier
     
     public void sendWarning()
     {
-        Console.WriteLine("Warning, dangerous operation in: " + serialNumber);
+        Logger.Log("Warning, dangerous operation in: " + serialNumber);
     }
     
     public void loadContainer(double mass, bool isDangerous)
@@ -28,14 +28,14 @@ public class LiquidContainer : Container, IHazardNotifier
         
         if (exceededCapacity > 0)
         {
-            Console.WriteLine("Warning, dangerous operation in: " + serialNumber);
+            Logger.Log("Warning, dangerous operation in: " + serialNumber);
             throw new OverfillException(serialNumber + ": cannot load " + mass + " kg, max mass is exceeded by " + exceededCapacity + " kg");
         }
 
         hasDangerous |= isDangerous;
         
         contentWeight += mass;
-        Console.WriteLine("You have successfully loaded " + mass + " kg to container " + serialNumber);
+        Logger.Log("You have successfully loaded " + mass + " kg to container " + serialNumber);
         
     }
 

@@ -16,16 +16,17 @@ public abstract class Container
     public string serialNumber { get; set; } //autogenertaed
     public double maxCapacity { get; set; }
     
-    public bool isOnShip { get; set; } = false;
+    public bool isOnShip { get; set; }
 
     protected Container(double continerHeight, double containerWeight, double containerDepth, int maxCapacity)
     {
-        this.contentWeight = 0;
+        contentWeight = 0;
         this.continerHeight = continerHeight;
         this.containerWeight = containerWeight;
         this.containerDepth = containerDepth;
-        this.containerId = generateId();
+        containerId = generateId();
         this.maxCapacity = maxCapacity;
+        isOnShip = false;
     }
 
     //Creates new id and makes sure that this id doesn't exist
@@ -59,11 +60,11 @@ public abstract class Container
         if (!this.isOnShip)
         {
             this.contentWeight = 0;
-            Console.WriteLine("You have successfully unloaded container: " + serialNumber);
+            Logger.Log("You have successfully unloaded container: " + serialNumber);
         }
         else
         {
-            Console.WriteLine("Cannot unload container: " + serialNumber);
+            Logger.Log("Cannot unload container because it's on the freight: " + serialNumber);
         }
 
     }
@@ -80,7 +81,7 @@ public abstract class Container
             throw new OverfillException(serialNumber + ": cannot load " + mass + " kg, max mass is exceeded by " + exceededCapacity + " kg");
         }
         contentWeight += mass ;
-        Console.WriteLine("You have successfully loaded " + mass + " kg to container " + serialNumber);
+        Logger.Log("You have successfully loaded " + mass + " kg to container " + serialNumber);
         
     }
     

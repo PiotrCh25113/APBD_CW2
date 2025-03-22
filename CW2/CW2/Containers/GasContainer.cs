@@ -11,17 +11,23 @@ public class GasContainer : Container, IHazardNotifier
         this.containerType = "G";
         this.serialNumber = generateSerialNumber();
     }
-
-    override
+    
         public void unLoadContainer()
     {
-        this.contentWeight *= 0.05;
-        Console.WriteLine("You have successfully unloaded container: " + serialNumber);
+        if (!this.isOnShip)
+        {
+            this.contentWeight *= 0.05;
+            Logger.Log("You have successfully unloaded container: " + serialNumber);
+        }
+        else
+        {
+            Logger.Log("Cannot unload container because it's on the freight: " + serialNumber);
+        }
     }
     
     public void sendWarning()
     {
-        Console.WriteLine("Warning, dangerous operation in: " + serialNumber);
+        Logger.Log("Warning, dangerous operation in: " + serialNumber);
     }
     
 }

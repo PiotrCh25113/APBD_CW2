@@ -1,60 +1,82 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using CW2;
+﻿using CW2;
 using CW2.Exceptions;
+///Tests specified in the PDF
+//Stworzenie kontenera danego typu
+Logger.Log();
+Logger.Log("Creating containers");
 
-Console.WriteLine("Hello, World!");
+LiquidContainer firstLiquid = new LiquidContainer(10,  20,2,20);
+GasContainer firstGas = new GasContainer(10,  20,2,14);
+CoolContainer firstCool = new CoolContainer(10,  20,2,20, "bananas", 12);
 
-GasContainer testGas = new GasContainer(10,  21,2,14);
-testGas.printContainer();
-Console.WriteLine(testGas.contentWeight);
+
+//Załadowanie ładunku do danego kontenera
+Logger.Log();
+Logger.Log("Loading containers: ");
 try
 {
-    testGas.loadContainer(10);
-}
-catch (OverfillException ex)
-{
-    Console.WriteLine(ex);
-}
-
-testGas.unLoadContainer();
-testGas.unLoadContainer();
-Console.WriteLine(testGas.contentWeight);
-testGas.sendWarning();
-
-LiquidContainer testLiquid = new LiquidContainer(10,  21,2,100);
-
-
-try
-{
-    testLiquid.loadContainer(46, false);
-    testLiquid.loadContainer(3, true);
-    testLiquid.loadContainer(3, false);
-
-}
-catch (OverfillException ex)
-{
-    Console.WriteLine(ex);
-}
-Console.WriteLine(testLiquid.hasDangerous);
-CoolProduct bananas = new CoolProduct("bananas", 10, 12.9);
-CoolProduct chocolate = new CoolProduct("chocolate", 3, -2.9);
-
-CoolContainer testCool = new CoolContainer(10,  21,2,20, "bananas", 11);
-try
-{
-    testCool.loadContainer(bananas);
-    testCool.loadContainer(bananas);
-    testCool.loadContainer(chocolate);
-    
+    firstLiquid.loadContainer(8, true);
+    firstGas.loadContainer(3);
+    firstCool.loadContainer(new CoolProduct("bananas", 20, 20));
 }
 catch (OverfillException e)
 {
-    Console.WriteLine(e);
+    Logger.Log(e.Message);
 }
 
-testCool.printContainer();
+//Załadowanie kontenera na statek
+Logger.Log();
+Logger.Log("Loading container on freight : ");
+Freight firstFreight = new Freight(15, 100, 50);
+
+firstFreight.loadSingleContainerOnFreight(firstLiquid);
+
+//Załadowanie listy kontenerów na statek
+Logger.Log();
+Logger.Log("Loading container list on freight : ");
+
+List<Container> containersToLoad = new List<Container>();
+
+containersToLoad.Add(firstCool);
+containersToLoad.Add(firstGas);
+containersToLoad.Add(firstLiquid); //this container is already loadaded, added it to show how program handles duplicates
+
+firstFreight.loadContainersOnFreight(containersToLoad);
+
+//Usunięcie kontenera ze statku
+Logger.Log();
+Logger.Log("Removing container from freight: ");
+firstFreight.unloadContainerFromFreight(firstLiquid);
+//Rozładowanie kontenera
+Logger.Log();
+Logger.Log("Unloading container: ");
+bool test = firstLiquid.isOnShip;
+firstLiquid.unLoadContainer();
 
 
+//Zastąpienie kontenera na statku o danym numerze innym kontenerem
+Logger.Log();
+Logger.Log("Replacing container: ");
+Logger.Log();
+Logger.Log("Before replacing containers on freight: ");
+firstFreight.showFreight();
+
+firstFreight.replaceContaier(firstCool.serialNumber, firstLiquid);
+
+Logger.Log();
+Logger.Log("After replacing containers on freight:");
+firstFreight.showFreight();
+
+Freight secondFreight = new Freight(15, 100, 50);
 
 
+//Możliwość przeniesienie kontenera między dwoma statkami
+Logger.Log();
+Logger.Log("Moving containers between freights: ");
+Freight.moveToFreight(firstFreight, secondFreight, firstGas);
+
+secondFreight.showFreight();
+
+Logger.Log();
+
+firstFreight.showFreight();

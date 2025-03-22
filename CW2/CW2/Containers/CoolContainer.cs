@@ -36,7 +36,7 @@ public class CoolContainer : Container
             throw new OverfillException(serialNumber + ": cannot load " + product.productName + " max temperature is exceeded ");
         }
         contentWeight += product.mass ;
-        Console.WriteLine("You have successfully loaded " + product.productName + " to container " + serialNumber);
+        Logger.Log("You have successfully loaded " + product.productName + " to container " + serialNumber);
         
     }
 }

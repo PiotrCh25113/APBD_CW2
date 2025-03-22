@@ -19,10 +19,11 @@ public class Freight
     {
         if (checkIfCanBeLoaded(container))
         {
+            container.isOnShip = true;
             currentContainersCount++;
             currentContainersWeight += container.containerWeight + container.contentWeight;
             containersOnFreight.Add(container);
-            Console.WriteLine("Loaded container: " + container.serialNumber);
+            Logger.Log("Loaded container on the freight: " + container.serialNumber);
             return true;
         }
         return false;
@@ -39,14 +40,15 @@ public class Freight
     public bool unloadContainerFromFreight(Container container)
     {
         if (containersOnFreight.Contains(container))
-        {
+        {   
+            container.isOnShip = false;
             containersOnFreight.Remove(container);
             currentContainersCount--;
             currentContainersWeight -= container.containerWeight + container.contentWeight;
-            Console.WriteLine("Unloaded container: " + container.serialNumber);
+            Logger.Log("Unloaded container from freight: " + container.serialNumber);
             return true;
         }
-        Console.WriteLine("Cannot unload container because it's not present on this freight: " + container.serialNumber);
+        Logger.Log("Cannot unload container because it's not present on this freight: " + container.serialNumber);
         return false;
     }
 
@@ -66,23 +68,28 @@ public class Freight
 
         if (isOnThisFreight)
         {
-            containersOnFreight.Remove(containerToReplace);
-            containersOnFreight.Add(container);
+            Logger.Log("Replacing containers!");
+            unloadContainerFromFreight(containerToReplace);
+            loadSingleContainerOnFreight(container);
         }
     }
 
-    public static void moveToFreight(Freight originalFreight, Freight destinationFreight, Container containerToMove)
+    public static void moveToFreight(Freight originFreight, Freight destinationFreight, Container containerToMove)
     {
-        if (originalFreight.unloadContainerFromFreight(containerToMove))
+        if (originFreight.unloadContainerFromFreight(containerToMove))
         {
             if (destinationFreight.loadSingleContainerOnFreight(containerToMove))
             {
-                Console.WriteLine("Succesfully moved container: " + containerToMove.serialNumber);
+                Logger.Log("Succesfully moved container: " + containerToMove.serialNumber);
             }
             else
             {
-                Console.WriteLine("Cannot load container to new ship: " + containerToMove.serialNumber);
+                Logger.Log("Cannot load container to new ship: " + containerToMove.serialNumber);
             }
+        }
+        else
+        {
+            Logger.Log("Cannot load container to new ship: " + containerToMove.serialNumber);
         }
     }
 
@@ -106,7 +113,7 @@ public class Freight
         {
             return true;
         }
-        Console.WriteLine("Cannot load container: " + container.serialNumber);
+        Logger.Log("Cannot load container: " + container.serialNumber);
         return false;
     }
 }
