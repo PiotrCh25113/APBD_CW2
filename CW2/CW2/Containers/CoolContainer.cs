@@ -17,6 +17,10 @@ public class CoolContainer : Container
     
     public void loadContainer(CoolProduct product)
     {
+        if (this.isOnShip)
+        {
+            throw new OverfillException(serialNumber + ": cannot load container because it is on ship");
+        }
         if (product.productName.ToUpper() != productType.ToUpper())
         {
             throw new OverfillException(serialNumber + ": cannot load " + product.productName + ", this container only takes " + productType);

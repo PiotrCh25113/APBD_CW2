@@ -56,12 +56,24 @@ public abstract class Container
 
     public virtual void  unLoadContainer()
     {
-        this.contentWeight = 0;
-        Console.WriteLine("You have successfully unloaded container: " + serialNumber);
+        if (!this.isOnShip)
+        {
+            this.contentWeight = 0;
+            Console.WriteLine("You have successfully unloaded container: " + serialNumber);
+        }
+        else
+        {
+            Console.WriteLine("Cannot unload container: " + serialNumber);
+        }
+
     }
 
     public virtual void loadContainer(int mass)
     {
+        if (this.isOnShip)
+        {
+            throw new OverfillException(serialNumber + ": cannot load container because it is on ship");
+        }
         if (mass + contentWeight > maxCapacity)
         {
             double exceededCapacity =mass + contentWeight - maxCapacity;
